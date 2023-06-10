@@ -30,7 +30,7 @@ export default function Page() {
           </p>
         </div>
         <div>
-          <button onClick={handleClick} className='w-full h-12 bg-dark_slate_grey rounded-md text-white font-bold'>Dismiss message</button>
+          <button onClick={handleClick} className='w-full h-12 bg-dark_slate_grey rounded-md text-white font-bold transition-all hover:-translate-y-1'>Dismiss message</button>
         </div>
       </div>
     </main>
