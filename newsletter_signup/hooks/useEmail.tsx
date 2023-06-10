@@ -1,7 +1,6 @@
 'use client'
-import { useRef } from 'react'
+import { useRef, useContext, useState } from 'react'
 import { useRouter } from 'next/navigation';
-import { useContext } from 'react'
 import Context from '@/context/FormContext'
 
 export default function useEmail(){
@@ -10,37 +9,41 @@ export default function useEmail(){
 
   const inputRef = useRef<HTMLInputElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [error, setError] = useState(null);
+
   const router = useRouter();
   
   const verifyEmail = (): boolean => {    
     const email = inputRef.current?.value;
     contexto.setForm({email: email})
+    console.log(email);
+    
+    const regex = /\S+@\S+\.\S+/;
 
     if(email === '') {
       inputRef.current?.classList.add('border-gray-300');
       inputRef.current?.classList.remove('bg-red-50');
       inputRef.current?.classList.remove('border-red-600');
-    }
-    const regex = /\S+@\S+\.\S+/;
-    if(regex.test(email!)) {
+
+      setError('El email está vacío...')
+    } else if(regex.test(email!)) {
       inputRef.current?.classList.remove('border-red-600');
       inputRef.current?.classList.remove('bg-red-50');
       inputRef.current?.classList.add('border-gray-300');
       inputRef.current?.classList.add('bg-gray-50');
-      buttonRef.current?.classList.add('button-gradient');
-
-      // buttonRef.current?.removeAttribute('disabled')
-
+      buttonRef.current?.classList.add('button-gradient');     
+       
+      setError(null);
       return true;
     } else {
       inputRef.current?.classList.add('bg-red-50');
       inputRef.current?.classList.add('border-red-600');
       buttonRef.current?.classList.remove('button-gradient');
-
-      // buttonRef.current?.setAttribute('disabled', '')
-
+      
+      setError('Formato incorrecto de email')
       return false;
     }
+
   }
   
   const submitEmail = (evt: any): void => {
@@ -58,6 +61,7 @@ export default function useEmail(){
   return {
     inputRef,
     buttonRef,
+    error,
     submitEmail,
     verifyEmail
   }
