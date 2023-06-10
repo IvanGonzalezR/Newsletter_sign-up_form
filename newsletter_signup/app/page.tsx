@@ -2,49 +2,9 @@
 
 import Image from 'next/image'
 import iconList from '../public/images/icon-list.svg'
-import { useRef } from 'react';
+import Form from '../components/Form'
 
 export default function Home() {
-
-  const inputRef = useRef<HTMLInputElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  
-  const verifyEmail = (): boolean => {
-    const email = inputRef.current?.value;
-    if(email === '') {
-      inputRef.current?.classList.add('border-gray-300');
-      inputRef.current?.classList.remove('bg-red-50');
-      inputRef.current?.classList.remove('border-red-600');
-    }
-    const regex = /\S+@\S+\.\S+/;
-    if(regex.test(email!)) {
-      inputRef.current?.classList.remove('border-red-600');
-      inputRef.current?.classList.remove('bg-red-50');
-      inputRef.current?.classList.add('border-gray-300');
-      inputRef.current?.classList.add('bg-gray-50');
-      buttonRef.current?.classList.add('button-gradient');
-
-      return true;
-    } else {
-      inputRef.current?.classList.add('bg-red-50');
-      inputRef.current?.classList.add('border-red-600');
-      buttonRef.current?.classList.remove('button-gradient');
-
-      return false;
-    }
-  }
-
-  const submitEmail = (evt: React.FormEvent<HTMLFormElement>): void => {
-    evt.preventDefault();
-
-    const isEmailVerified = verifyEmail();
-    if(isEmailVerified) {
-      // TODO - Abrir modal 
-      console.log('verificado');
-    } else {
-      console.log('verificadont');
-    }
-  }
   
   return (
     <main className='w-full min-h-screen bg-white lg:flex lg:flex-row-reverse lg:px-6 lg:py-4 lg:w-3/4 lg:h-3/4 lg:min-h-[34rem] lg:max-w-[60rem] lg:max-h-[40rem] lg:rounded-3xl lg:items-center'>      
@@ -66,13 +26,7 @@ export default function Home() {
             <p>And much more!</p>
           </div>
         </div>      
-        <form className='w-full h-auto flex flex-col space-y-4 px-6' onSubmit={submitEmail}>
-          <div className='flex flex-col space-y-4'>
-            <label className='font-bold'>Email Address</label>
-            <input ref={inputRef} onChange={verifyEmail} type='text' placeholder='email@company.com' className='w-full h-12 rounded-md px-4 border border-gray-300 focus:outline-none'/>
-            <button ref={buttonRef} className='w-full h-12 bg-dark_slate_grey rounded-md text-white font-bold'>Subscribe to monthly newsletter</button>
-          </div>
-        </form>
+        <Form />
       </div>
     </main>
   )
